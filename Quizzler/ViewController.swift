@@ -11,7 +11,6 @@ import UIKit
 class ViewController: UIViewController {
     let BUTTON_YES = 1
     let BUTTON_NO =  2
-    let MAX_ANS = 13
     //Place your instance variables here
     let allQuestions = QuestionBank().list
     var questionCount = 0
@@ -38,13 +37,22 @@ class ViewController: UIViewController {
     func updateUI() {
         questionLabel.text = (allQuestions[questionCount] as Question).questionText
         scoreLabel.text = String(score)
-        progressLabel.text = "\(questionCount + 1)/\(MAX_ANS)"
+        progressLabel.text = "\(questionCount + 1)/\(allQuestions.count)"
     }
     
 
     func nextQuestion() {
-        if  questionCount < MAX_ANS - 1{
+        if  questionCount < allQuestions.count - 1{
             questionCount += 1
+        } else {
+            let alert = UIAlertController(title: "Awesome", message: "You have finished all questions. Do you want to start over?", preferredStyle: .alert)
+            
+            let restartAction = UIAlertAction(title: "Restart", style: .default , handler: { (UIAlertAction) in
+                self.startOver()
+                self.updateUI()
+            })
+            alert.addAction(restartAction)
+            present(alert, animated: true, completion: nil)
         }
     }
     
@@ -57,13 +65,11 @@ class ViewController: UIViewController {
     
     
     func startOver() {
+        questionCount = 0
        
     }
     
     func convertToBool(_ i: Int) -> Bool {
         return i == BUTTON_YES ? true : false
     }
-    
-
-    
 }
