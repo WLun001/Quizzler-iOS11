@@ -45,30 +45,38 @@ class ViewController: UIViewController {
     func nextQuestion() {
         if  questionCount < allQuestions.count - 1{
             questionCount += 1
-        } else {
-            let alert = UIAlertController(title: "Awesome", message: "You have finished all questions. Do you want to start over?", preferredStyle: .alert)
-            
-            let restartAction = UIAlertAction(title: "Restart", style: .default , handler: { (UIAlertAction) in
-                self.startOver()
-                self.updateUI()
-            })
-            alert.addAction(restartAction)
-            present(alert, animated: true, completion: nil)
+        }
+        if questionCount == allQuestions.count - 1 {
+            showRestart()
         }
     }
     
     
     func checkAnswer(_ ques: Question, _ response: Int) {
         if convertToBool(response) == ques.answer {
+            ProgressHUD.showSuccess("Correct")
             score += 1
+        } else {
+            ProgressHUD.showError("Wrong")
         }
     }
     
     
     func startOver() {
         questionCount = 0
-        score = 0
+        score = 0 
        
+    }
+    
+    func showRestart() {
+        let alert = UIAlertController(title: "Awesome", message: "You have finished all questions. Do you want to start over?", preferredStyle: .alert)
+        
+        let restartAction = UIAlertAction(title: "Restart", style: .default , handler: { (UIAlertAction) in
+            self.startOver()
+            self.updateUI()
+        })
+        alert.addAction(restartAction)
+        present(alert, animated: true, completion: nil)
     }
     
     func convertToBool(_ i: Int) -> Bool {
