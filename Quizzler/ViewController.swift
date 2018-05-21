@@ -67,6 +67,7 @@ class ViewController: UIViewController {
     
     func startOver() {
         questionCount = 0
+        score = 0
        
     }
     
